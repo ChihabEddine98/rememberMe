@@ -10,7 +10,7 @@
     </head>
     <body>
             <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
-                <a class="navbar-brand" href="#"> <i class="fas fa-thumbtack"></i> Remember-Me </a>
+                <a class="navbar-brand" href="{{ path('home_page') }}"> <i class="fas fa-thumbtack"></i> Remember-Me </a>
                 <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
                     <span class="navbar-toggler-icon"></span>
                 </button>
@@ -26,9 +26,35 @@
                         <li class="nav-item">
                             <a class="nav-link" href="#"><i class="fas fa-share-alt"></i> Partagés avec moi</a>
                         </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="#"><i class="fas fa-folder-plus"></i> Nouveau Mémo</a>
+                        </li>
+
                     </ul>
-                    <a class="btn btn-outline-light mx-1 my-2 my-sm-0" href="{{ path('app_login') }}">Se lancer</a>
-                    <a class="btn btn-outline-info mx-1 my-2 my-sm-0" href="{{ path('app_login') }}" >Se connecter</a>
+                    <ul class="navbar-nav my-2 my-lg-0 mr-5 pr-5">
+                        {% if is_granted('ROLE_USER') %}
+                            <li class="nav-item dropdown mx-auto">
+                                <a class="nav-link dropdown-toggle" href="#" id="compte" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                    {{ app.user}}
+                                </a>
+                                <div class="dropdown-menu col-lg-12 px-1" style="min-width: 200px" role="menu" aria-labelledby="compte">
+                                    <a class="dropdown-item" href="#"><i class="far fa-lightbulb"></i>  Mes mémos</a>
+                                    <a class="dropdown-item" href="#"><i class="fas fa-share-alt"></i> Partagés avec moi</a>
+                                    <a class="dropdown-item" href="#"><i class="fas fa-folder-plus"></i> nouveau mémo</a>
+                                    <div class="dropdown-divider"></div>
+                                    <a class="btn btn-outline-danger w-100 mx-auto" href="{{path('app_logout')}}"><i class="fas fa-power-off"></i> Déconnexion</a>
+                                </div>
+                            </li>
+                        {% else %}
+                            <li class="nav-item">
+                                <a class="btn btn-outline-light mx-1 my-2 my-sm-0" href="{{ path('app_login') }}">Se lancer</a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="btn btn-outline-info mx-1 my-2 my-sm-0" href="{{ path('app_login') }}" >Se connecter</a>
+                            </li>
+                        {% endif %}
+                    </ul>
+
                 </div>
             </nav>
 
