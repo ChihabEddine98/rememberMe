@@ -1,0 +1,168 @@
+{% extends 'base.html.twig' %}
+
+
+{% block title %} {{ memo.titre }} {% endblock %}
+{% block stylesheets %}
+    {{ parent() }}
+    <link rel="stylesheet" href="{{ asset('css/memos.css') }}">
+{% endblock %}
+
+{% block body_content %}
+
+    <div class="col-lg-12 mx-auto mt-3 pt-1 bg-light text-dark">
+
+        <div class="col-lg-12  ">
+
+            <div class="col-lg-12  text-dark">
+                {% if memo.auteur.id==app.user.id %}
+                    <div class="text-center pt-4">
+                        <a href="{{ path('memo_detail',{'id':memo.id}) }}" class="btn btn-danger btn-lg"> <span><i
+                                        class="fas fa-edit"></i></span> Modifier ce mémo </a>
+                        <a href="{{ path('memo_detail',{'id':memo.id}) }}" class="btn btn-secondary btn-lg" id="share"> <span><i
+                                        class="fas fa-share-alt"></i></span> Partager ce mémo </a>
+                        <a href="{{ path('memo_detail',{'id':memo.id}) }}" class="btn btn-dark btn-lg"><span><i
+                                        class="fas fa-plus-circle"></i></span> Ajouter un autre mémo </a>
+                    </div>
+
+                {% endif %}
+                <hr>
+                <div class="row col-12 mb-3 courseImg">
+                    <img style="height: 320px;object-fit: cover;" class="col-12"
+                         src="{{ asset('img/memos.jpg') }}" alt="">
+                </div>
+
+                <div class=" row col-lg-12 col-sm-10 courseDetails mx-auto px-5 mb-5">
+                    <h1 class="courseTitle text-center"> {{ memo.titre }} </h1>
+                </div>
+
+                <div class="text-center row col-lg-12 col-sm-6 courseDetails  d-flex flex-row">
+
+                    {# Info Auteur #}
+                    <div class=" col col-lg-12 col-sm-6 my-2 d-flex flex-column">
+                        <a href="#">
+                            {{ memo.auteur}}
+                        </a>
+                        <a href="#" class="text-dark">
+                            {{ memo.auteur.email }}
+                        </a>
+                        <p>
+                            Le {{ memo.createdAt|date('d/m/Y') }}
+                            à {{ memo.createdAt|date('H:i') }}
+                        </p>
+                    </div>
+
+                </div>
+
+                <hr class="divider">
+                <div class="col-12 text-center mb-5">
+                    <h2 class="text-left col-12"> Description :</h2>
+                    <p>
+                        {{ memo.detail }}
+                    </p>
+                </div>
+                <hr>
+
+
+                <div class="modal" tabindex="-1" role="dialog">
+                    <div class="modal-dialog" role="document">
+                        <div class="modal-content">
+                            <div class="modal-header">
+                                <h5 class="modal-title">Partagez vos souvenirs !</h5>
+                                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                    <span aria-hidden="true">&times;</span>
+                                </button>
+                            </div>
+                            <div class="modal-body">
+                                <div class="p-2 rounded" id="result_solution">
+                                    <h5> Avec ? </h5>
+                                </div>
+                                <select id="choices" autofocus>
+                                    {% for user in users %}
+                                        <option value="{{ user.id }}"> {{ user }}</option>
+                                    {% endfor %}
+                                </select>
+                            </div>
+                            <div class="modal-footer">
+                                <button type="button" class="btn btn-danger" id="valid_share">Valider</button>
+                                <button type="button" class="btn btn-dark" data-dismiss="modal">Fermer</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+
+            <!-- <div class="btn_">
+                <a href="/register" class="btn"> Commencer ! </a>
+            </div> -->
+
+        </div>
+
+    </div>
+    </div>
+
+{% endblock %}
+
+{% block javascripts %}
+    {{ parent() }}
+
+    <script>
+        $(document).ready(function () {
+
+            $('#share').click(function (e) {
+                $('.modal').modal();
+                return false;
+            });
+
+            $('#valid_share').click(function (e) {
+                var choisi=$('#choices option:selected');
+                var dest=parseInt(choisi.val());
+                $.ajax({
+                    type: "POST",
+                    url: "{{ path('share_memo') }}",
+                    dataType: "json",
+                    contentType: "application/json; charset=utf-8",
+                    data: JSON.stringify({"dest": dest , "memo":{{ memo.id }} }),
+                })
+                    .done(function (data) {
+                        let msg="";
+                        if (data.result) {
+                            msg=" Super ! c'est bien sauvegardé";
+                            $('#result_solution').addClass('alert-success').removeClass('alert-danger');
+                        } else {
+                            msg=" Oops ! qq chose d'imprévu";
+                            $('#result_solution').addClass('alert-danger').removeClass('alert-success');
+
+                        }
+                        $('#result_solution h5').text(msg);
+                        $("#result_solution").fadeIn('slow').animate({
+                            opacity: 1.0}, 2000).fadeOut('slow');
+                        li="";
+                        instructions=shuffle(instructions);
+
+                        for (let ins of instructions)
+                        {
+                            li+="                            <li class=\"row instruction\" id=\""+ins+"\">\n" +
+                                "                                <h5 class=\"p-2 border border-light \">"+ins+" </h5>\n" +
+                                "                            </li>\n";
+                        }
+                        ins_div="<ul id=\"instructions\">\n" +li+
+                            "</ul>"
+                        $('#ins_div').html(ins_div);
+                        $("#instructions").sortable({
+                            stop: function (e, ui) {
+                                SetSortOrder();
+                            },
+                        });
+                        setTimeout(function() {
+                            $('.modal').modal('hide');
+                        }, 2500);
+
+                        // $("#result_solution").show();
+                        // setTimeout(function() { $("#result_solution").hide(); }, 2000);
+                    });
+            })
+        })
+    </script>
+{% endblock %}
+

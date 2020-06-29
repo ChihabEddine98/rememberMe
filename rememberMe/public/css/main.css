@@ -1,0 +1,9 @@
+body{
+background: linear-gradient(to right, #b2fefa, #0ed2f7);
+}
+
+.welcome_img img{
+    margin: 30px auto ;
+    width: 75%;
+    border-radius: 10px;
+}

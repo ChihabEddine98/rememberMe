@@ -1,0 +1,62 @@
+{% extends 'base.html.twig' %}
+
+{% block title %} Mes mémos {% endblock %}
+{% block stylesheets %}
+    {{ parent() }}
+    <link rel="stylesheet" href="{{ asset('css/memos.css') }}">
+{% endblock %}
+
+{% block body_content %}
+
+<div class="col-lg-12 mx-auto mt-3 py-3">
+
+    <div class="col-lg-12 text-center ">
+        {% if memos | length > 0 %}
+
+        <div class="container">
+
+            <hr>
+            <h1> Mes mémos !</h1>
+            <hr>
+            <div class="row ml-5">
+                {% for memo in memos %}
+                    {% set theme=random(['text-light bg-primary','text-light bg-dark','text-light bg-info',
+                        'text-light bg-danger','text-light bg-success',
+                        'text-light bg-secondary','text-dark bg-warning']) %}
+                    <div class="card {{ theme }} mb-2 mx-2" style="max-width: 30rem;">
+                        <div class="card-header">Le {{ memo.createdAt|date('d/m/Y à H:i') }}</div>
+                        <div class="card-body text-center">
+                            <h5 class="card-title">{{ memo.titre }}</h5>
+                            <p class="card-text" style="font-size: 18px">
+                                {% if memo.auteur==app.user %}
+                                    <i class="fas fa-thumbtack"></i> Par vous
+                                {% else %}
+                                    <i class="fas fa-share-alt"></i>
+                                {% endif %}
+                            </p>
+                            <a href="{{ path('memo_detail',{'id':memo.id}) }}"
+                               class="btn btn-outline-{{ theme=='text-dark bg-warning' ? 'dark': 'light' }}">
+                                <i class="fas fa-pencil-alt"></i> Modifier
+                            </a>
+                            <a href="{{ path('memo_detail',{'id':memo.id}) }}"
+                               class="btn btn-outline-{{ theme=='text-dark bg-warning' ? 'dark': 'light' }}">
+                                Voir +
+                            </a>
+                        </div>
+                    </div>
+                {% endfor %}
+            </div><!-- /.row -->
+
+            {% else %}
+                <h6 class="text-center col-12"> Aucun Mémo Disponible...</h6>
+            {% endif %}
+            <!-- <div class="btn_">
+                <a href="/register" class="btn"> Commencer ! </a>
+            </div> -->
+
+        </div>
+
+    </div>
+
+    {% endblock %}
+
