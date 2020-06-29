@@ -47,8 +47,8 @@ class AuthController extends AbstractController
             $user->setPassword($encoder->encodePassword(
                 $user,
                 $user->getPassword()
-            ));
-
+            ))->setCreatedAt(new \DateTime('now'))
+                ->setUpdatedAt(new \DateTime('now'));
             $manager=$this->getDoctrine()->getManager();
             $manager->persist($user);
             $manager->flush();
