@@ -16,11 +16,11 @@
             <div class="col-lg-12  text-dark">
                 {% if memo.auteur.id==app.user.id %}
                     <div class="text-center pt-4">
-                        <a href="{{ path('memo_detail',{'id':memo.id}) }}" class="btn btn-danger btn-lg"> <span><i
+                        <a href="{{ path('modif_memo',{'id':memo.id}) }}" class="btn btn-danger btn-lg"> <span><i
                                         class="fas fa-edit"></i></span> Modifier ce mémo </a>
                         <a href="{{ path('memo_detail',{'id':memo.id}) }}" class="btn btn-secondary btn-lg" id="share"> <span><i
                                         class="fas fa-share-alt"></i></span> Partager ce mémo </a>
-                        <a href="{{ path('memo_detail',{'id':memo.id}) }}" class="btn btn-dark btn-lg"><span><i
+                        <a href="{{ path('add_memo')}}" class="btn btn-dark btn-lg"><span><i
                                         class="fas fa-plus-circle"></i></span> Ajouter un autre mémo </a>
                     </div>
 

@@ -30,7 +30,7 @@
                                 <p class="card-text" style="font-size: 18px">
                                     {% if memo.auteur==app.user %}
                                         Par vous
-                                        <a href="{{ path('memo_detail',{'id':memo.id}) }}"
+                                        <a href="{{ path('modif_memo',{'id':memo.id}) }}"
                                            class="btn btn-outline-{{ theme=='text-dark bg-warning' ? 'dark': 'light' }}">
                                             <i class="fas fa-pencil-alt"></i>
                                         </a>
