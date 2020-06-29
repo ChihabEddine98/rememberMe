@@ -18,7 +18,7 @@
                 <div class="collapse navbar-collapse" id="navbarSupportedContent">
                     <ul class="navbar-nav mr-auto">
                         <li class="nav-item">
-                            <a class="nav-link" href="#"><i class="fas fa-stream"></i> Tous les mémos</a>
+                            <a class="nav-link" href="{{ path('all_memos_page') }}"><i class="fas fa-stream"></i> Tous les mémos</a>
                         </li>
                         <li class="nav-item">
                             <a class="nav-link" href="#"><i class="far fa-lightbulb"></i> Mes mémos</a>
@@ -27,8 +27,8 @@
                             <a class="nav-link" href="#"><i class="fas fa-share-alt"></i> Partagés avec moi</a>
                         </li>
                     </ul>
-                    <button class="btn btn-outline-light mx-1 my-2 my-sm-0" type="submit">Se lancer</button>
-                    <button class="btn btn-outline-info mx-1 my-2 my-sm-0" type="submit">Se connecter</button>
+                    <a class="btn btn-outline-light mx-1 my-2 my-sm-0" href="{{ path('app_login') }}">Se lancer</a>
+                    <a class="btn btn-outline-info mx-1 my-2 my-sm-0" href="{{ path('app_login') }}" >Se connecter</a>
                 </div>
             </nav>
 
