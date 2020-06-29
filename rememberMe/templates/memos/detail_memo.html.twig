@@ -78,7 +78,9 @@
                                 </div>
                                 <select id="choices" autofocus>
                                     {% for user in users %}
-                                        <option value="{{ user.id }}"> {{ user }}</option>
+                                        {% if user.id != app.user.id %}
+                                            <option value="{{ user.id }}"> {{ user }}</option>
+                                        {% endif %}
                                     {% endfor %}
                                 </select>
                             </div>
@@ -137,23 +139,6 @@
                         $('#result_solution h5').text(msg);
                         $("#result_solution").fadeIn('slow').animate({
                             opacity: 1.0}, 2000).fadeOut('slow');
-                        li="";
-                        instructions=shuffle(instructions);
-
-                        for (let ins of instructions)
-                        {
-                            li+="                            <li class=\"row instruction\" id=\""+ins+"\">\n" +
-                                "                                <h5 class=\"p-2 border border-light \">"+ins+" </h5>\n" +
-                                "                            </li>\n";
-                        }
-                        ins_div="<ul id=\"instructions\">\n" +li+
-                            "</ul>"
-                        $('#ins_div').html(ins_div);
-                        $("#instructions").sortable({
-                            stop: function (e, ui) {
-                                SetSortOrder();
-                            },
-                        });
                         setTimeout(function() {
                             $('.modal').modal('hide');
                         }, 2500);
